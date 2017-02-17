@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+    "name": "Trump Media Accountability Form Filler",
+    "description": "Because fuck Donald Trump",
+    "version": "1.0",
+    "permissions": [
+        "declarativeContent",
+        "tabs",
+        "storage",
+        "cookies",
+        "webRequest",
+        "webRequestBlocking",
+        "https://*.donaldjtrump.com/*"
+    ],
+    "incognito": "split",
+    "content_security_policy": "script-src 'self' https://action.donaldjtrump.com; object-src 'self' https://action.donaldjtrump.com",
+    "background": {
+        "scripts": ["js/background-bundle.js"],
+        "persistent": true
+    },
+    "content_scripts": [
+        {
+          "matches": [
+              "https://action.donaldjtrump.com/mainstream-media-accountability-survey*"
+          ],
+          "js": ["js/client-bundle.js"]
+        }
+    ]
+}
