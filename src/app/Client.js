@@ -11,7 +11,6 @@ function sanitizeNameForEmail(name){
 
 // First, fetch random user data
 axios.get(url).then(response => {
-    console.log(response);
     let data = response.data;
 
     let results = data.results;
