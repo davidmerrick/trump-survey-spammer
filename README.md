@@ -5,7 +5,7 @@ CNN, MSNBC, the NYTimes, and the Washington Post, and unfavorable to Fox and Tru
 
 I recorded the payload from this form submission, and used it as the template for answering these questions.
 
-After installing this plugin, visit the survey page.
+After installing this plugin, visit the [survey page](https://action.donaldjtrump.com/mainstream-media-accountability-survey/).
 
 The extension will generate a random first name, last name, zip code, and e-mail address.
 It will then submit the form in the background, and refresh the page, which will trigger it to start over again.
@@ -14,5 +14,5 @@ It will then submit the form in the background, and refresh the page, which will
 
 1. In chrome://extensions, check the "developer mode" checkbox to enable developer extensions.
 2. Drag and drop the "dist" folder to chrome://extensions.
-3. Visit https://action.donaldjtrump.com/mainstream-media-accountability-survey/
+3. Visit the [survey page](https://action.donaldjtrump.com/mainstream-media-accountability-survey/)
 4. Profit :-)
