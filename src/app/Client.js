@@ -4,6 +4,12 @@ import MessageType from '../constants/MessageType'
 
 let url = "https://randomuser.me/api/";
 
+// Strip out spaces in name so it can be jammed in an e-mail address
+function sanitizeNameForEmail(name){
+    return name.replace(' ', '');
+}
+
+// First, fetch random user data
 axios.get(url).then(response => {
     console.log(response);
     let data = response.data;
@@ -12,10 +18,11 @@ axios.get(url).then(response => {
     let firstName = results[0].name.first;
     let lastName = results[0].name.last;
     let zipCode = results[0].location.postcode;
-    let email = `${firstName}.${lastName}@gmail.com`;
+    let email = `${sanitizeNameForEmail(firstName)}.${sanitizeNameForEmail(lastName)}@gmail.com`;
 
     // Fetch CSRF token
     let csrfToken = jquery("input[name=csrfmiddlewaretoken]").val();
+    console.log(`CSRF token: ${csrfToken}`);
 
     // Assemble payload
     let payload = `csrfmiddlewaretoken=${csrfToken}`;

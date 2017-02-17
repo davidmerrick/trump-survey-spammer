@@ -11867,6 +11867,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 var url = "https://randomuser.me/api/";
 
+// Strip out spaces in name so it can be jammed in an e-mail address
+function sanitizeNameForEmail(name) {
+    return name.replace(' ', '');
+}
+
+// First, fetch random user data
 _axios2['default'].get(url).then(function (response) {
     console.log(response);
     var data = response.data;
@@ -11875,10 +11881,11 @@ _axios2['default'].get(url).then(function (response) {
     var firstName = results[0].name.first;
     var lastName = results[0].name.last;
     var zipCode = results[0].location.postcode;
-    var email = firstName + '.' + lastName + '@gmail.com';
+    var email = sanitizeNameForEmail(firstName) + '.' + sanitizeNameForEmail(lastName) + '@gmail.com';
 
     // Fetch CSRF token
     var csrfToken = (0, _jquery2['default'])("input[name=csrfmiddlewaretoken]").val();
+    console.log('CSRF token: ' + csrfToken);
 
     // Assemble payload
     var payload = 'csrfmiddlewaretoken=' + csrfToken;

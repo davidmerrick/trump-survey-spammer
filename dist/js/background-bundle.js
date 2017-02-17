@@ -1639,12 +1639,23 @@ var _MessageType2 = _interopRequireDefault(_MessageType);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function submitForm(payload, callback) {
+function submitForm(tabId, payload) {
     var FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
-    console.log("submitting form");
     _axios2['default'].post(FORM_ACTION, payload).then(function (response) {
         console.log("SUCCESS: submitted form.");
-        return callback();
+
+        // Now, remove the CSRF token cookie
+        var cookieDetails = {
+            url: "https://action.donaldjtrump.com",
+            name: "csrftoken"
+        };
+        chrome.cookies.remove(cookieDetails, function (callback) {
+            console.log("SUCCESS: removed CSRF token cookie");
+            var reloadProperties = {
+                bypassCache: true
+            };
+            chrome.tabs.reload(tabId, reloadProperties);
+        });
     });
 };
 
@@ -1652,7 +1663,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
     switch (message.id) {
         case _MessageType2['default'].SUBMIT_FORM:
             var payload = message.payload;
-            submitForm(payload, callback);
+            var tabId = sender.tab.id;
+            submitForm(tabId, payload);
             return true;
             break;
     }
