@@ -12,6 +12,7 @@ It will then submit the form in the background, and refresh the page, which will
 
 ## Installation
 
-Drag and drop the "dist" folder to chrome://extensions.
-Visit https://action.donaldjtrump.com/mainstream-media-accountability-survey/
-Profit :-)
+1. In chrome://extensions, check the "developer mode" checkbox to enable developer extensions.
+2. Drag and drop the "dist" folder to chrome://extensions.
+3. Visit https://action.donaldjtrump.com/mainstream-media-accountability-survey/
+4. Profit :-)
