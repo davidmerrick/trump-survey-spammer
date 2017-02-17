@@ -14,5 +14,5 @@ It will then submit the form in the background, and refresh the page, which will
 
 1. In chrome://extensions, check the "developer mode" checkbox to enable developer extensions.
 2. Drag and drop the "dist" folder to chrome://extensions.
-3. Visit the [survey page](https://action.donaldjtrump.com/mainstream-media-accountability-survey/)
+3. Visit the [survey page](https://action.donaldjtrump.com/mainstream-media-accountability-survey/).
 4. Profit :-)
