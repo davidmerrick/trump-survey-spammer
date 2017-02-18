@@ -12,6 +12,7 @@
         "webRequestBlocking",
         "https://*.donaldjtrump.com/*"
     ],
+    "browser_action": {},
     "incognito": "split",
     "content_security_policy": "script-src 'self' https://action.donaldjtrump.com; object-src 'self' https://action.donaldjtrump.com",
     "background": {
