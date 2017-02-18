@@ -1637,19 +1637,50 @@ var _MessageType = require('../constants/MessageType');
 
 var _MessageType2 = _interopRequireDefault(_MessageType);
 
+var _Constants = require('../constants/Constants');
+
+var _Constants2 = _interopRequireDefault(_Constants);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+// Google Analytics tracking
+
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments);
+    }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga'); // Note: https protocol here
+
+ga('create', _Constants2['default'].GA_TRACKING_CODE, 'auto');
+ga('set', 'checkProtocolTask', function () {}); // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
+ga('require', 'displayfeatures');
+ga('send', 'pageview', '/background.html');
+
+function trackFormSubmit() {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'submit',
+        eventAction: 'formSubmit',
+        eventLabel: 'Trump Survey Spammer'
+    });
+}
+
+function removeCsrfCookie(callback) {
+    var cookieDetails = {
+        url: "https://action.donaldjtrump.com",
+        name: "csrftoken"
+    };
+    chrome.cookies.remove(cookieDetails, function () {
+        callback();
+    });
+}
 
 function submitForm(tabId, payload) {
     var FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
     _axios2['default'].post(FORM_ACTION, payload).then(function (response) {
         console.log("SUCCESS: submitted form.");
-
-        // Now, remove the CSRF token cookie
-        var cookieDetails = {
-            url: "https://action.donaldjtrump.com",
-            name: "csrftoken"
-        };
-        chrome.cookies.remove(cookieDetails, function (callback) {
+        trackFormSubmit();
+        removeCsrfCookie(function () {
             console.log("SUCCESS: removed CSRF token cookie");
             var reloadProperties = {
                 bypassCache: true
@@ -1691,16 +1722,19 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
     }
 });
 
-(function (i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments);
-    }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
-})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+},{"../constants/Constants":29,"../constants/MessageType":30,"axios":1}],29:[function(require,module,exports){
+"use strict";
 
-ga('create', 'UA-92229338-1', 'auto');
-ga('send', 'pageview');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var Constants = {
+    GA_TRACKING_CODE: "UA-92229338-1"
+};
 
-},{"../constants/MessageType":29,"axios":1}],29:[function(require,module,exports){
+exports["default"] = Constants;
+
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
