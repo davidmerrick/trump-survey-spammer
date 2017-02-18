@@ -2,8 +2,9 @@ import axios from 'axios'
 import MessageType from '../constants/MessageType'
 import Constants from '../constants/Constants'
 
-// Google Analytics tracking
+let submitCount = 0;
 
+// Google Analytics tracking
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -33,10 +34,17 @@ function removeCsrfCookie(callback){
     });
 }
 
+function updateSubmitCount(){
+    submitCount++;
+    chrome.browserAction.setBadgeText({text: submitCount.toString()});
+    // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
+}
+
 function submitForm(tabId, payload){
     const FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
     axios.post(FORM_ACTION, payload).then(response => {
         console.log("SUCCESS: submitted form.");
+        updateSubmitCount();
         trackFormSubmit();
         removeCsrfCookie(() => {
             console.log("SUCCESS: removed CSRF token cookie");
@@ -45,27 +53,6 @@ function submitForm(tabId, payload){
             };
             chrome.tabs.reload(tabId, reloadProperties);
         });
-    });
-
-    // Record Submission Counter
-    chrome.storage.local.get("submitCount", data => {
-        if (data.hasOwnProperty("submitCount")) {
-            data.submitCount += 1;
-        } else if (chrome.runtime.lastError) {
-            console.error(`ERROR: ${chrome.extension.lastError.toString()}`);
-        } else {
-            data = {"submitCount": 1};
-        }
-
-        chrome.storage.local.set(data, r => {
-          if (!chrome.runtime.lastError) {
-            console.log(`Successfully recorded form submission #${data.submitCount.toString()}`);
-          } else {
-            console.log(`An error occurred: ${chrome.extension.lastError.message}`);
-          }
-        });
-        chrome.browserAction.setBadgeText({text: data.submitCount.toString()});
-        // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
     });
 };
 

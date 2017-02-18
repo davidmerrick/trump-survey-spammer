@@ -1643,8 +1643,9 @@ var _Constants2 = _interopRequireDefault(_Constants);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-// Google Analytics tracking
+var submitCount = 0;
 
+// Google Analytics tracking
 (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
         (i[r].q = i[r].q || []).push(arguments);
@@ -1675,10 +1676,17 @@ function removeCsrfCookie(callback) {
     });
 }
 
+function updateSubmitCount() {
+    submitCount++;
+    chrome.browserAction.setBadgeText({ text: submitCount.toString() });
+    // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
+}
+
 function submitForm(tabId, payload) {
     var FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
     _axios2['default'].post(FORM_ACTION, payload).then(function (response) {
         console.log("SUCCESS: submitted form.");
+        updateSubmitCount();
         trackFormSubmit();
         removeCsrfCookie(function () {
             console.log("SUCCESS: removed CSRF token cookie");
@@ -1687,27 +1695,6 @@ function submitForm(tabId, payload) {
             };
             chrome.tabs.reload(tabId, reloadProperties);
         });
-    });
-
-    // Record Submission Counter
-    chrome.storage.local.get("submitCount", function (data) {
-        if (data.hasOwnProperty("submitCount")) {
-            data.submitCount += 1;
-        } else if (chrome.runtime.lastError) {
-            console.error('ERROR: ' + chrome.extension.lastError.toString());
-        } else {
-            data = { "submitCount": 1 };
-        }
-
-        chrome.storage.local.set(data, function (r) {
-            if (!chrome.runtime.lastError) {
-                console.log('Successfully recorded form submission #' + data.submitCount.toString());
-            } else {
-                console.log('An error occurred: ' + chrome.extension.lastError.message);
-            }
-        });
-        chrome.browserAction.setBadgeText({ text: data.submitCount.toString() });
-        // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
     });
 };
 
