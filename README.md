@@ -19,12 +19,11 @@ It will then submit the form in the background, and refresh the page, which will
 
 ## Contributing
 
-Fork, Pull forked repo, create new branch. (blah, blah)
-
-1. Install [yarn](https://yarnpkg.com/en/).
-2. Change to project directory.
-3. Install dependencies: `yarn install`.
-4. Make modifications in `src/`.
-5. Build changes: `grunt`.
+1. Fork, Pull forked repo, create new branch. (blah, blah)
+2. Install [yarn](https://yarnpkg.com/en/).
+3. Change to project directory.
+4. Install dependencies: `yarn install`.
+5. Make modifications in `src/`.
+6. Build changes: `grunt`.
 
 Test, git push, and open PR :-) (thanks for your contribution!)
