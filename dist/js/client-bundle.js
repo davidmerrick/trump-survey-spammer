@@ -11876,6 +11876,29 @@ function ucFirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function makeId() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
+function makeSeparator() {
+    var possible = "-_.";
+    var separator = possible.charAt(Math.floor(Math.random() * possible.length));
+    return separator;
+}
+
+function getDomain() {
+    var domains = ["gmail.com", "yahoo.com", "msn.com"];
+
+    var index = Math.floor(Math.random() * domains.length);
+    return domains[index];
+}
+
 // First, fetch random user data
 _axios2['default'].get(url).then(function (response) {
     var data = response.data;
@@ -11886,7 +11909,15 @@ _axios2['default'].get(url).then(function (response) {
     var lastName = results[0].name.last;
     lastName = ucFirst(lastName);
     var zipCode = results[0].location.postcode;
-    var email = sanitizeNameForEmail(firstName) + '.' + sanitizeNameForEmail(lastName) + '@gmail.com';
+    var randomId = makeId();
+    var separator1 = makeSeparator();
+    var separator2 = makeSeparator();
+    var domain = getDomain();
+
+    var emailAddress = '' + sanitizeNameForEmail(firstName) + separator1 + sanitizeNameForEmail(lastName) + separator2 + randomId + '@' + domain;
+    console.log('First: ' + firstName);
+    console.log('Last: ' + lastName);
+    console.log('e-mail: ' + emailAddress);
 
     // Fetch CSRF token
     var csrfToken = (0, _jquery2['default'])("input[name=csrfmiddlewaretoken]").val();
@@ -11905,8 +11936,8 @@ _axios2['default'].get(url).then(function (response) {
     payload += '&question_3387=CNN'; // Which television source do you primarily get your news from?
     payload += '&question_3387=MSNBC'; // Which television source do you primarily get your news from?
     payload += '&question_3387=Local+news'; // Which television source do you primarily get your news from?
-    payload += '&question_3388=Washington+Post'; // Do you use a source not listed above?
-    payload += '&question_3390=New+York+Times'; // Which online source do you use the most?
+    payload += '&question_3388=The+failing+New+York+Times'; // Do you use a source not listed above?
+    payload += '&question_3390=The+failing+New+York+Times'; // Which online source do you use the most?
     payload += '&question_3392_0=Yes'; // Do you trust the mainstream media to tell the truth about the Republican Party’s positions and actions?
     payload += '&question_3392_1=';
     payload += '&question_3393_0=No'; // Do you believe that the mainstream media does not do their due diligence fact-checking before publishing stories on the Trump administration?
@@ -11944,7 +11975,7 @@ _axios2['default'].get(url).then(function (response) {
     payload += '&full_name=' + firstName + '+' + lastName;
     payload += '&first_name=' + firstName;
     payload += '&last_name=' + lastName;
-    payload += '&email=' + email;
+    payload += '&email=' + emailAddress;
     payload += '&postal_code=' + zipCode;
     payload += '&svid=306&utm_source=e_p-p&utm_medium=email';
     payload += '&utm_campaign=GOP_surveys_Mainstream-Media-Accountability-Survey';
