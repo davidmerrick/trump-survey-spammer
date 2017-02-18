@@ -19,6 +19,27 @@ function submitForm(tabId, payload){
             chrome.tabs.reload(tabId, reloadProperties);
         });
     });
+
+    // Record Submission Counter
+    chrome.storage.local.get("fucksGiven", function(data) {
+        if (data.hasOwnProperty("fucksGiven")) {
+            data.fucksGiven += 1;
+        } else if (chrome.runtime.lastError) {
+            console.log("Encountered error: " + chrome.extension.lastError.toString());
+        } else {
+            data = {"fucksGiven": 1};
+        }
+
+        chrome.storage.local.set(data, function(r) {
+          if (!chrome.runtime.lastError) {
+            console.log("Successfully recorded form submission #" + data.fucksGiven.toString());
+          } else {
+            console.log('An error occurred: ' + chrome.extension.lastError.message);
+          }
+        });
+        chrome.browserAction.setBadgeText({text: data.fucksGiven.toString()});
+        // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
+    });
 };
 
 chrome.runtime.onMessage.addListener((message, sender, callback) => {

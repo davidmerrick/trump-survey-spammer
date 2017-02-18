@@ -16,3 +16,16 @@ It will then submit the form in the background, and refresh the page, which will
 2. Drag and drop the "dist" folder to chrome://extensions.
 3. Visit the [survey page](https://action.donaldjtrump.com/mainstream-media-accountability-survey/).
 4. Profit :-)
+
+## Contributing
+
+Fork, Pull forked repo, create new branch. (blah, blah)
+
+Install npm.
+Change to project directory.
+Install Grunt in project: `npm install grunt --save-dev`
+Install dev dependencies: `npm install --save-dev`
+Make modifications in `src/`.
+Build changes: `grunt`.
+
+Test, git push, and open PR :) (thanks for your contribution!)
