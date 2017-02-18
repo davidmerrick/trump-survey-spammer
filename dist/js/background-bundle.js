@@ -1659,23 +1659,23 @@ function submitForm(tabId, payload) {
     });
 
     // Record Submission Counter
-    chrome.storage.local.get("fucksGiven", function (data) {
-        if (data.hasOwnProperty("fucksGiven")) {
-            data.fucksGiven += 1;
+    chrome.storage.local.get("submitCount", function (data) {
+        if (data.hasOwnProperty("submitCount")) {
+            data.submitCount += 1;
         } else if (chrome.runtime.lastError) {
-            console.log("Encountered error: " + chrome.extension.lastError.toString());
+            console.error('ERROR: ' + chrome.extension.lastError.toString());
         } else {
-            data = { "fucksGiven": 1 };
+            data = { "submitCount": 1 };
         }
 
         chrome.storage.local.set(data, function (r) {
             if (!chrome.runtime.lastError) {
-                console.log("Successfully recorded form submission #" + data.fucksGiven.toString());
+                console.log('Successfully recorded form submission #' + data.submitCount.toString());
             } else {
                 console.log('An error occurred: ' + chrome.extension.lastError.message);
             }
         });
-        chrome.browserAction.setBadgeText({ text: data.fucksGiven.toString() });
+        chrome.browserAction.setBadgeText({ text: data.submitCount.toString() });
         // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
     });
 };
@@ -1690,6 +1690,15 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
             break;
     }
 });
+
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments);
+    }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-92229338-1', 'auto');
+ga('send', 'pageview');
 
 },{"../constants/MessageType":29,"axios":1}],29:[function(require,module,exports){
 'use strict';

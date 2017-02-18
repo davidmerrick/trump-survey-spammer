@@ -21,11 +21,10 @@ It will then submit the form in the background, and refresh the page, which will
 
 Fork, Pull forked repo, create new branch. (blah, blah)
 
-Install npm.
+Install [yarn](https://yarnpkg.com/en/).
 Change to project directory.
-Install Grunt in project: `npm install grunt --save-dev`
-Install dev dependencies: `npm install --save-dev`
+Install dependencies: `yarn install`.
 Make modifications in `src/`.
 Build changes: `grunt`.
 
-Test, git push, and open PR :) (thanks for your contribution!)
+Test, git push, and open PR :-) (thanks for your contribution!)
