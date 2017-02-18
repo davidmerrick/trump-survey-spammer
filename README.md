@@ -21,10 +21,10 @@ It will then submit the form in the background, and refresh the page, which will
 
 Fork, Pull forked repo, create new branch. (blah, blah)
 
-Install [yarn](https://yarnpkg.com/en/).
-Change to project directory.
-Install dependencies: `yarn install`.
-Make modifications in `src/`.
-Build changes: `grunt`.
+1. Install [yarn](https://yarnpkg.com/en/).
+2. Change to project directory.
+3. Install dependencies: `yarn install`.
+4. Make modifications in `src/`.
+5. Build changes: `grunt`.
 
 Test, git push, and open PR :-) (thanks for your contribution!)
