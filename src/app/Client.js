@@ -1,62 +1,21 @@
 import axios from 'axios'
 import jquery from 'jquery'
 import MessageType from '../constants/MessageType'
+import RandomUser from '../models/RandomUser'
+import Constants from '../constants/Constants'
 
-let url = "https://randomuser.me/api/?inc=name,location&?nat=us";
-
-// Strip out spaces in name so it can be jammed in an e-mail address
-function sanitizeNameForEmail(name){
-    return name.replace(' ', '').toLowerCase();
-}
-
-function ucFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function makeId()
-{
-    let text = "";
-    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for(let i=0; i < 5; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-
-function makeSeparator(){
-    let possible = "-_.";
-    let separator = possible.charAt(Math.floor(Math.random() * possible.length));
-    return separator;
-}
-
-function getDomain(){
-    let domains = [
-        "gmail.com",
-        "yahoo.com",
-        "msn.com"
-    ];
-
-    let index = Math.floor(Math.random() * domains.length);
-    return domains[index];
-}
+let url = Constants.RANDOM_USER_ENDPOINT;
 
 // First, fetch random user data
 axios.get(url).then(response => {
     let data = response.data;
-
     let results = data.results;
-    let firstName = results[0].name.first;
-    firstName = ucFirst(firstName);
-    let lastName = results[0].name.last;
-    lastName = ucFirst(lastName);
-    let zipCode = results[0].location.postcode;
-    let randomId = makeId();
-    let separator1 = makeSeparator();
-    let separator2 = makeSeparator();
-    let domain = getDomain();
+    let user = new RandomUser(results[0]);
 
-    let emailAddress = `${sanitizeNameForEmail(firstName)}${separator1}${sanitizeNameForEmail(lastName)}${separator2}${randomId}@${domain}`;
+    let firstName = user.getFirstName();
+    let lastName = user.getLastName();
+    let zipCode = user.getLastName();
+    let emailAddress = user.getEmailAddress();
     console.log(`First: ${firstName}`);
     console.log(`Last: ${lastName}`);
     console.log(`e-mail: ${emailAddress}`);

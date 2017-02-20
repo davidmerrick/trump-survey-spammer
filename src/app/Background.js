@@ -41,7 +41,7 @@ function updateSubmitCount(){
 }
 
 function submitForm(tabId, payload){
-    const FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
+    const FORM_ACTION = Constants.SURVEY_ACTION_URL;
     axios.post(FORM_ACTION, payload).then(response => {
         console.log("SUCCESS: submitted form.");
         updateSubmitCount();

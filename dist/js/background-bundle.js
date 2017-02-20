@@ -1683,7 +1683,7 @@ function updateSubmitCount() {
 }
 
 function submitForm(tabId, payload) {
-    var FORM_ACTION = "https://action.donaldjtrump.com/survey/mainstream-media-accountability-survey/";
+    var FORM_ACTION = _Constants2['default'].SURVEY_ACTION_URL;
     _axios2['default'].post(FORM_ACTION, payload).then(function (response) {
         console.log("SUCCESS: submitted form.");
         updateSubmitCount();
@@ -1716,7 +1716,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var Constants = {
-    GA_TRACKING_CODE: "UA-92229338-1"
+    GA_TRACKING_CODE: "UA-92229338-1",
+    SURVEY_ACTION_URL: "https://action.donaldjtrump.com/mainstream-media-accountability-survey/",
+    RANDOM_USER_ENDPOINT: "https://randomuser.me/api/?inc=name,location&?nat=us"
 };
 
 exports["default"] = Constants;

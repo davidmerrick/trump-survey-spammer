@@ -11863,58 +11863,28 @@ var _MessageType = require('../constants/MessageType');
 
 var _MessageType2 = _interopRequireDefault(_MessageType);
 
+var _RandomUser = require('../models/RandomUser');
+
+var _RandomUser2 = _interopRequireDefault(_RandomUser);
+
+var _Constants = require('../constants/Constants');
+
+var _Constants2 = _interopRequireDefault(_Constants);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var url = "https://randomuser.me/api/?inc=name,location&?nat=us";
-
-// Strip out spaces in name so it can be jammed in an e-mail address
-function sanitizeNameForEmail(name) {
-    return name.replace(' ', '').toLowerCase();
-}
-
-function ucFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function makeId() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < 5; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-
-function makeSeparator() {
-    var possible = "-_.";
-    var separator = possible.charAt(Math.floor(Math.random() * possible.length));
-    return separator;
-}
-
-function getDomain() {
-    var domains = ["gmail.com", "yahoo.com", "msn.com"];
-
-    var index = Math.floor(Math.random() * domains.length);
-    return domains[index];
-}
+var url = _Constants2['default'].RANDOM_USER_ENDPOINT;
 
 // First, fetch random user data
 _axios2['default'].get(url).then(function (response) {
     var data = response.data;
-
     var results = data.results;
-    var firstName = results[0].name.first;
-    firstName = ucFirst(firstName);
-    var lastName = results[0].name.last;
-    lastName = ucFirst(lastName);
-    var zipCode = results[0].location.postcode;
-    var randomId = makeId();
-    var separator1 = makeSeparator();
-    var separator2 = makeSeparator();
-    var domain = getDomain();
+    var user = new _RandomUser2['default'](results[0]);
 
-    var emailAddress = '' + sanitizeNameForEmail(firstName) + separator1 + sanitizeNameForEmail(lastName) + separator2 + randomId + '@' + domain;
+    var firstName = user.getFirstName();
+    var lastName = user.getLastName();
+    var zipCode = user.getLastName();
+    var emailAddress = user.getEmailAddress();
     console.log('First: ' + firstName);
     console.log('Last: ' + lastName);
     console.log('e-mail: ' + emailAddress);
@@ -11993,7 +11963,21 @@ _axios2['default'].get(url).then(function (response) {
     });
 });
 
-},{"../constants/MessageType":30,"axios":1,"jquery":27}],30:[function(require,module,exports){
+},{"../constants/Constants":30,"../constants/MessageType":31,"../models/RandomUser":32,"axios":1,"jquery":27}],30:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var Constants = {
+    GA_TRACKING_CODE: "UA-92229338-1",
+    SURVEY_ACTION_URL: "https://action.donaldjtrump.com/mainstream-media-accountability-survey/",
+    RANDOM_USER_ENDPOINT: "https://randomuser.me/api/?inc=name,location&?nat=us"
+};
+
+exports["default"] = Constants;
+
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12012,4 +11996,134 @@ var MessageType = (0, _keymirror2['default'])({
 
 exports['default'] = MessageType;
 
-},{"keymirror":28}]},{},[29]);
+},{"keymirror":28}],32:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RandomUser = function () {
+    function RandomUser(userData) {
+        _classCallCheck(this, RandomUser);
+
+        this.firstName = userData.name.first;
+        this.lastName = userData.name.last;
+        this.zipCode = userData.location.postcode;
+    }
+
+    _createClass(RandomUser, [{
+        key: 'sanitizeNameForEmail',
+        value: function () {
+            function sanitizeNameForEmail(name) {
+                // Strip out spaces in name so it can be jammed in an e-mail address
+                return name.replace(' ', '').toLowerCase();
+            }
+
+            return sanitizeNameForEmail;
+        }()
+    }, {
+        key: 'ucFirst',
+        value: function () {
+            function ucFirst(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            return ucFirst;
+        }()
+    }, {
+        key: 'makeId',
+        value: function () {
+            function makeId() {
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                for (var i = 0; i < 5; i++) {
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                }
+                return text;
+            }
+
+            return makeId;
+        }()
+    }, {
+        key: 'makeSeparator',
+        value: function () {
+            function makeSeparator() {
+                var possible = "-_.";
+                var separator = possible.charAt(Math.floor(Math.random() * possible.length));
+                return separator;
+            }
+
+            return makeSeparator;
+        }()
+    }, {
+        key: 'getDomain',
+        value: function () {
+            function getDomain() {
+                var domains = ["gmail.com", "yahoo.com", "msn.com"];
+
+                var index = Math.floor(Math.random() * domains.length);
+                return domains[index];
+            }
+
+            return getDomain;
+        }()
+    }, {
+        key: 'getFirstName',
+        value: function () {
+            function getFirstName() {
+                return this.ucFirst(this.firstName);
+            }
+
+            return getFirstName;
+        }()
+    }, {
+        key: 'getLastName',
+        value: function () {
+            function getLastName() {
+                return this.ucFirst(this.lastName);
+            }
+
+            return getLastName;
+        }()
+    }, {
+        key: 'getZipCode',
+        value: function () {
+            function getZipCode() {
+                return this.zipCode;
+            }
+
+            return getZipCode;
+        }()
+    }, {
+        key: 'getEmailAddress',
+        value: function () {
+            function getEmailAddress() {
+                var randomId = this.makeId();
+                var separator1 = this.makeSeparator();
+                var separator2 = this.makeSeparator();
+                var domain = this.getDomain();
+
+                var firstName = this.firstName,
+                    lastName = this.lastName;
+
+
+                var emailAddress = '' + this.sanitizeNameForEmail(firstName) + separator1 + this.sanitizeNameForEmail(lastName) + separator2 + randomId + '@' + domain;
+                return emailAddress;
+            }
+
+            return getEmailAddress;
+        }()
+    }]);
+
+    return RandomUser;
+}();
+
+exports['default'] = RandomUser;
+
+},{}]},{},[29]);
