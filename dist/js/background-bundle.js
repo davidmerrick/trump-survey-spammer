@@ -1682,7 +1682,7 @@ function updateSubmitCount() {
     // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
 }
 
-function submitForm(tabId, payload) {
+function submitForm(tabId, payload, callback) {
     var FORM_ACTION = _Constants2['default'].SURVEY_ACTION_URL;
     _axios2['default'].post(FORM_ACTION, payload).then(function (response) {
         console.log("SUCCESS: submitted form.");
@@ -1693,7 +1693,12 @@ function submitForm(tabId, payload) {
             var reloadProperties = {
                 bypassCache: true
             };
+            return callback(null);
             chrome.tabs.reload(tabId, reloadProperties);
+        });
+    })['catch'](function (error) {
+        return callback({
+            error: error.message
         });
     });
 };
@@ -1703,7 +1708,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
         case _MessageType2['default'].SUBMIT_FORM:
             var payload = message.payload;
             var tabId = sender.tab.id;
-            submitForm(tabId, payload);
+            submitForm(tabId, payload, callback);
             return true;
             break;
     }

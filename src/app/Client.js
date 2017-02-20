@@ -90,6 +90,10 @@ axios.get(url).then(response => {
         payload: payload
     };
     chrome.runtime.sendMessage(message, callback => {
-        window.location.reload();
+        if(callback && callback.error){
+            alert(`Error submitting survey. Server returned: ${callback.error}`);
+        }
     });
 });
+
+

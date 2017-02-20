@@ -11959,7 +11959,9 @@ _axios2['default'].get(url).then(function (response) {
         payload: payload
     };
     chrome.runtime.sendMessage(message, function (callback) {
-        window.location.reload();
+        if (callback && callback.error) {
+            alert('Error submitting survey. Server returned: ' + callback.error);
+        }
     });
 });
 

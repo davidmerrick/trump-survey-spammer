@@ -40,7 +40,7 @@ function updateSubmitCount(){
     // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
 }
 
-function submitForm(tabId, payload){
+function submitForm(tabId, payload, callback){
     const FORM_ACTION = Constants.SURVEY_ACTION_URL;
     axios.post(FORM_ACTION, payload).then(response => {
         console.log("SUCCESS: submitted form.");
@@ -51,7 +51,12 @@ function submitForm(tabId, payload){
             let reloadProperties = {
                 bypassCache: true
             };
+            return callback(null);
             chrome.tabs.reload(tabId, reloadProperties);
+        });
+    }).catch(error => {
+        return callback({
+            error: error.message
         });
     });
 };
@@ -61,7 +66,7 @@ chrome.runtime.onMessage.addListener((message, sender, callback) => {
         case MessageType.SUBMIT_FORM:
             let payload = message.payload;
             let tabId = sender.tab.id;
-            submitForm(tabId, payload);
+            submitForm(tabId, payload, callback);
             return true;
             break;
     }
