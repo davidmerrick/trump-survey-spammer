@@ -1,6 +1,7 @@
 import axios from 'axios'
 import MessageType from '../constants/MessageType'
 import Constants from '../constants/Constants'
+import SubmitCountUtil from '../util/SubmitCountUtil'
 
 let submitCount = 0;
 
@@ -36,8 +37,8 @@ function removeCsrfCookie(callback){
 
 function updateSubmitCount(){
     submitCount++;
-    chrome.browserAction.setBadgeText({text: submitCount.toString()});
-    // TODO: Handle when integer becomes larger than 4 characters. This is truncated in the badge text.
+    let formattedCount = SubmitCountUtil.formatSubmitCount(submitCount);
+    chrome.browserAction.setBadgeText({text: formattedCount});
 }
 
 function submitForm(tabId, payload, callback){
