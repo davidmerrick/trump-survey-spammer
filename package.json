@@ -31,6 +31,7 @@
     "envify": "^4.0.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
+    "grunt-contrib-uglify": "^2.1.0",
     "grunt-contrib-watch": "^1.0.0",
     "reactify": "^0.15.2",
     "watchify": "^2.1.1"

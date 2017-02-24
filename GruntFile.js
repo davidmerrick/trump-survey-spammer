@@ -20,9 +20,23 @@ module.exports = function(grunt){
         watch: {
             files: 'src/**',
             tasks: ['default']
+        },
+        uglify: {
+            client: {
+                files: {
+                    'dist/js/client-bundle.js': ['dist/js/client-bundle.js']
+                }
+            },
+            background: {
+                files: {
+                    'dist/js/background-bundle.js': ['dist/js/background-bundle.js']
+                }
+            }
         }
     });
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-browserify');
-    grunt.registerTask('default', ['browserify', 'watch']);
+    grunt.registerTask('default', ['browserify', 'uglify', 'watch']);
+    grunt.registerTask('debug', ['browserify', 'watch']);
 };
